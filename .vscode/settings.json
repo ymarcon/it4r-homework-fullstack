@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "python.analysis.stubPath": "${workspaceFolder}/backend/",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/backend/.venv/Lib/site-packages",
+  ],
+  "python.analysis.typeCheckingMode": "strict",
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv",
+  "python.formatting.provider": "black",
+}
