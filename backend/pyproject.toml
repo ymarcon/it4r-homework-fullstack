@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "homework-fullstack"
+version = "0.1.0"
+description = ""
+authors = ["David Tang <david.tang@epfl.ch>"]
+readme = "README.md"
+packages = [{include = "homework_fullstack"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
