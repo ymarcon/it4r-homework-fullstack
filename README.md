@@ -39,3 +39,9 @@ We just get the dataset from our researcher and we are asked to display some cha
    3. The chart should show proportion of women and men in the selected canton (with a [doughnut chart](https://echarts.apache.org/examples/en/editor.html?c=pie-doughnut) for instance)
    4. A component has already been bootstraped in `frontend/src/components/GenderChart.vue`
 4. Bonus: Dockerize the application to be able to run everything using `docker-compose up`
+
+### Delivery
+
+1. Fork the repository
+2. Do your commits
+3. Create a pull request back to the original repository
