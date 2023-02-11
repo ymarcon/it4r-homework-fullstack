@@ -1,5 +1,5 @@
-from csv import DictReader
-from typing import Dict, List, Union
+from typing import Union
+import homework_fullstack.utils as hwu
 
 from fastapi import FastAPI
 
@@ -18,9 +18,9 @@ async def read_item(item_id: int, q: Union[str, None] = None):
 
 @app.get("/cantons")
 async def get_cantons():
-    cantons: List[Dict[str, str]] = []
-    with open("../dataset/canton.csv") as file:
-        reader = DictReader(file)
-        for row in reader:
-            cantons.append(row)
-    return cantons
+    return hwu.read_data("../dataset/canton.csv").to_dict("index")
+
+
+@app.get("/codes")
+async def get_codes():
+    return hwu.read_codes()
