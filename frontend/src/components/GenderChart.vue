@@ -1,22 +1,32 @@
 <script setup lang="ts">
-import { cantons } from "@/utils/canton";
+import { useCantonsStore } from "@/stores/cantons";
 import type { EChartsOption } from "echarts";
 import { PieChart } from "echarts/charts";
 import { LegendComponent, TooltipComponent } from "echarts/components";
 import { use } from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import { random } from "lodash";
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import VChart from "vue-echarts";
 
 use([SVGRenderer, PieChart, LegendComponent, TooltipComponent]);
 
-const cantonItems: { title: string; value: string }[] = cantons.map(
-  (canton) => ({
-    title: canton.name,
-    value: canton.id,
-  })
-);
+const cantonsStore = useCantonsStore();
+
+onMounted(() => {
+  cantonsStore.fetchCantons();
+});
+
+const cantonItems: { value: string; title: string }[] = computed(() => {
+  const items: { value: string; title: string }[] = [];
+  Object.keys(cantonsStore.cantons).forEach((key) => {
+    items.push({
+      value: key,
+      title: cantonsStore.cantons[key]["title"],
+    });
+  });
+  return items;
+});
 
 const selectedCanton = ref<string>();
 
@@ -51,10 +61,11 @@ function getGenderCount(canton?: string): {
   if (canton === undefined) {
     return {};
   }
+  const counts = cantonsStore.cantons[canton];
   return {
-    female: random(1024),
-    male: random(1024),
-    other: random(1024),
+    female: counts["female"],
+    male: counts["male"],
+    other: counts["other"],
   };
 }
 </script>
