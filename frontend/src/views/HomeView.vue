@@ -23,6 +23,11 @@ const apiUrl = import.meta.env.VITE_API_URL;
       Try Table Selection
     </v-btn>
 
+    <p class="mt-3">The data can also be downloaded as a CSV file.</p>
+    <v-btn variant="outlined" color="primary" class="mt-3" :href="apiUrl + '/cantons-csv'">
+      Download CSV
+    </v-btn>
+
     <p class="mt-3">The data are accessible through a public API.</p>
     <v-btn variant="outlined" color="primary" class="mt-3" :href="apiUrl + '/docs'" target="_blank">
       See API Docs

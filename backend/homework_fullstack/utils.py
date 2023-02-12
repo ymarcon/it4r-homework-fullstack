@@ -81,12 +81,12 @@ def read_cantons():
         if col not in ["title", "male", "female", "other", "code", "id"]:
             columnsToDrop.append(col)
     cantons = cantons.drop(columns=columnsToDrop, errors="ignore")
-    return cantons.to_dict("index")
+    return cantons
 
 
 def read_cantons_geo():
     """Read the cantons GeoJSON file and amend features with cantons data."""
-    cantons = read_cantons()
+    cantons = read_cantons().to_dict("index")
     dta = pkgutil.get_data("homework_fullstack", "data/cantons-geo.json")
     geo = json.load(io.BytesIO(dta))
     for feature in geo["features"]:
