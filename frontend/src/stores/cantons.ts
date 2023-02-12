@@ -18,7 +18,7 @@ export const useCantonsStore = defineStore("cantons", {
   actions: {
     async fetchCantons() {
       try {
-        const data = await axios.get("http://127.0.0.1:8000/cantons");
+        const data = await axios.get(import.meta.env.VITE_API_URL + "/cantons");
         this.cantons = data.data;
       } catch (error: any) {
         alert(error.response.data.detail);

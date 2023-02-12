@@ -8,3 +8,9 @@ dev-backend:
 
 dev-frontend:
 	$(MAKE) -C frontend dev
+
+docker-build:
+	docker compose build
+
+docker-up:
+	docker compose up

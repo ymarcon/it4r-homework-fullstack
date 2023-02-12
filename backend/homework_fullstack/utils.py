@@ -3,6 +3,7 @@ import json
 import importlib.resources
 import pandas as pd
 import re
+import os
 
 
 def read_codes():
@@ -51,7 +52,7 @@ def read_data(path: str):
 def read_cantons():
     """Read cantons data and format as a dictionary, where keys are canton codes."""
     # read data from file
-    cantons = read_data("../dataset/canton.csv")
+    cantons = read_data(os.getenv("DATA_DIR", "../dataset") + "/canton.csv")
     # sort alphabetically by Canton value, "should" have same order despite weird chars
     # as the built-in canton labels
     codes = pd.DataFrame.from_dict(

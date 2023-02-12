@@ -1,0 +1,17 @@
+version: '3'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3080:8080"
+    environment:
+      - ORIGINS=*
+    volumes:
+      - ./dataset:/data
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=http://localhost:3080
+    ports:
+      - "3090:80"

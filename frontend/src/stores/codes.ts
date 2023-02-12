@@ -18,7 +18,7 @@ export const useCodesStore = defineStore("codes", {
   actions: {
     async fetchCodes() {
       try {
-        const data = await axios.get("http://127.0.0.1:8000/codes");
+        const data = await axios.get(import.meta.env.VITE_API_URL + "/codes");
         this.codes = data.data;
       } catch (error) {
         alert(error);
