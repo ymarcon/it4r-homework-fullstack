@@ -27,7 +27,7 @@ const featureSelected = (event: any) => {
   }
 };
 
-const selectedItem = ref({});
+const selectedItem = ref();
 
 const chartOption = computed<EChartsOption>(() => {
   const count = selectedItem.value;
@@ -64,7 +64,7 @@ const chartOption = computed<EChartsOption>(() => {
         </ol-map>
       </v-col>
     </v-row>
-    <v-row v-if="selectedItem.title">
+    <v-row v-if="selectedItem && selectedItem.title">
       <v-col>
         <div class="text-h4" style="text-align: center;">{{ selectedItem.title }}</div>
         <v-responsive aspect-ratio="2">

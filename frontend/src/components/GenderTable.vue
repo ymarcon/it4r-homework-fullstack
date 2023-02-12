@@ -32,13 +32,13 @@ const showCanton = (item: ClickRowArgument) => {
 
 const searchValue = ref();
 
-const selectedCanton = ref<string>();
+const selectedCanton = ref();
 
-const selectedCantonTitle = computed<string>(() => {
+const selectedCantonTitle = computed(() => {
   if (selectedCanton.value) {
-    const canton = cantonsStore.cantons
-      .filter((val) => val.code === selectedCanton.value)
-      .pop();
+    const canton = cantonsStore.cantons.find(
+      (val) => val.code === selectedCanton.value
+    );
     return canton ? canton.title : null;
   }
   return null;
