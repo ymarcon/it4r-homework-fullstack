@@ -14,6 +14,9 @@ import "vuetify/styles";
 
 import "./assets/main.css";
 
+import OpenLayersMap from "vue3-openlayers";
+import "vue3-openlayers/dist/vue3-openlayers.css";
+
 const vuetify = createVuetify({
   components,
   directives,
@@ -35,5 +38,6 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(vuetify);
+app.use(OpenLayersMap);
 
 app.mount("#app");

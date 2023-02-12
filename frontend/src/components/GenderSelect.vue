@@ -6,18 +6,13 @@ import { PieChart } from "echarts/charts";
 import { LegendComponent, TooltipComponent } from "echarts/components";
 import { use } from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { computed, onMounted, ref } from "vue";
 import VChart from "vue-echarts";
+import { computed, ref } from "vue";
 
 use([SVGRenderer, PieChart, LegendComponent, TooltipComponent]);
 
 const cantonsStore = useCantonsStore();
 const codesStore = useCodesStore();
-
-onMounted(() => {
-  cantonsStore.fetchCantons();
-  codesStore.fetchCodes();
-});
 
 const codesItems = computed(() => {
   const items: { value: string; title: string }[] = codesStore.codes
@@ -40,6 +35,16 @@ const codesItems = computed(() => {
 });
 
 const selectedCanton = ref<string>();
+
+const selectedCantonTitle = computed<string>(() => {
+  if (selectedCanton.value) {
+    const canton = cantonsStore.cantons
+      .filter((val) => val.code === selectedCanton.value)
+      .pop();
+    return canton ? canton.title : null;
+  }
+  return null;
+});
 
 const chartOption = computed<EChartsOption>(() => {
   const count = getGenderCount(selectedCanton.value);
@@ -93,11 +98,18 @@ function getGenderCount(canton?: string): {
   <div>
     <v-row>
       <v-col>
+        <div class="text-h4 mb-3">
+          Dropdown Selection
+        </div>
+        <p class="font-weight-light mb-3">
+          Select a canton to see its gender statistics.
+        </p>
         <v-select v-model="selectedCanton" label="Canton" :items="codesItems" />
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="selectedCantonTitle">
       <v-col>
+        <div class="text-h4" style="text-align: center;">{{ selectedCantonTitle }}</div>
         <v-responsive aspect-ratio="2">
           <v-chart :option="chartOption" />
         </v-responsive>

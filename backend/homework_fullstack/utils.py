@@ -1,10 +1,6 @@
 from typing import List
-import json
-import importlib.resources
 import pandas as pd
-import re
-import os
-import io, pkgutil
+import json, re, os, io, pkgutil
 
 
 def read_codes():
@@ -86,3 +82,14 @@ def read_cantons():
             columnsToDrop.append(col)
     cantons = cantons.drop(columns=columnsToDrop, errors="ignore")
     return cantons.to_dict("index")
+
+
+def read_cantons_geo():
+    """Read the cantons GeoJSON file and amend features with cantons data."""
+    cantons = read_cantons()
+    dta = pkgutil.get_data("homework_fullstack", "data/cantons-geo.json")
+    geo = json.load(io.BytesIO(dta))
+    for feature in geo["features"]:
+        props = feature["properties"]
+        feature["properties"] = cantons[props["id"]]
+    return geo

@@ -46,6 +46,15 @@ async def get_cantons():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/cantons-geo")
+async def get_cantons_geo():
+    """Get cantons data as a GeoJSON document."""
+    try:
+        return hwu.read_cantons_geo()
+    except ValueError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/codes")
 async def get_codes():
     """Get cantons normalized list."""
