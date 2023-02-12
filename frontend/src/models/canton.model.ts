@@ -1,5 +1,6 @@
 // Canton: the canton data
 export interface Canton {
+  id: number;
   code: string;
   title: string;
   male: number;

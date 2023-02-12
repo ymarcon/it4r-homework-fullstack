@@ -20,15 +20,21 @@ onMounted(() => {
 });
 
 const codesItems = computed(() => {
-  const items: { value: string; title: string }[] = [];
-  const codes = codesStore.codes;
-  Object.keys(codes)
-    .sort()
-    .forEach((key) => {
-      items.push({
-        value: key,
-        title: codes[key],
-      });
+  const items: { value: string; title: string }[] = codesStore.codes
+    .map((code) => {
+      return {
+        value: code.code,
+        title: code.canton,
+      };
+    })
+    .sort((a, b) => {
+      if (a.title < b.title) {
+        return -1;
+      }
+      if (a.title > b.title) {
+        return 1;
+      }
+      return 0;
     });
   return items;
 });

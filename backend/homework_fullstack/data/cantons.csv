@@ -1,0 +1,27 @@
+id,canton,code
+1,Zurich,ZH
+2,Berne,BE
+3,Lucerne,LU
+4,Uri,UR
+5,Schwyz,SZ
+6,Obwald,OW
+7,Nidwald,NW
+8,Glaris,GL
+9,Zoug,ZG
+10,Fribourg,FR
+11,Soleure,SO
+12,Bâle-Ville,BR
+13,Bâle-Campagne,BS
+14,Schaffhouse,SH
+15,Appenzell Rh.-Ext.,AR
+16,Appenzell Rh.-Int.,AI
+17,Saint-Gall,SG
+18,Grisons,GR
+19,Argovie,AG
+20,Thurgovie,TG
+21,Tessin,TI
+22,Vaud,VD
+23,Valais,VS
+24,Neuchâtel,NE
+25,Genève,GE
+26,Jura,JU

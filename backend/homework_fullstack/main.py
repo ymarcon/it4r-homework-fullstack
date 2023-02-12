@@ -23,16 +23,15 @@ async def read_root():
     return RedirectResponse("/cantons")
 
 
-@app.get("/cantons/{code}")
-async def get_canton(code: str):
-    """Get the data of a specific canton."""
+@app.get("/cantons/{id}")
+async def get_canton(id: int):
+    """Get the data of a specific canton by its id number."""
     try:
         cantons = hwu.read_cantons()
         # normalize code's case
-        codestr = code.upper()
-        if codestr not in cantons:
+        if id not in cantons:
             raise HTTPException(status_code=404, detail="Canton not found")
-        data = cantons[codestr]
+        data = cantons[id]
         return data
     except ValueError as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -49,5 +48,5 @@ async def get_cantons():
 
 @app.get("/codes")
 async def get_codes():
-    """Get cantons codes."""
-    return hwu.read_codes()
+    """Get cantons normalized list."""
+    return list(hwu.read_codes().to_dict("index").values())

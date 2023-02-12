@@ -8,7 +8,7 @@ export type CodesState = {
 
 export const useCodesStore = defineStore("codes", {
   state: () => ({
-    codes: {},
+    codes: [],
   } as CodesState),
   getters: {
     getCodes(state) {

@@ -8,7 +8,10 @@ def test_cantons_count():
 
 def test_codes():
     codes = hwu.read_codes()
-    assert len(codes.keys()) == 26
+    assert "id" in codes
+    assert "canton" in codes
+    assert "code" in codes
+    assert len(codes["id"]) == 26
 
 
 def test_to_int():
