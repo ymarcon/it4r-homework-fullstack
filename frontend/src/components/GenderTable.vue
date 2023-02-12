@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useCantonsStore } from "@/stores/cantons";
 import { useChartOptions } from "@/utils/chart";
-import { useCodesStore } from "@/stores/codes";
 import type { EChartsOption } from "echarts";
 import { PieChart } from "echarts/charts";
 import { LegendComponent, TooltipComponent } from "echarts/components";
@@ -9,31 +8,29 @@ import { use } from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import VChart from "vue-echarts";
 import { computed, ref } from "vue";
+import type { Header, ClickRowArgument } from "vue3-easy-data-table";
 
 use([SVGRenderer, PieChart, LegendComponent, TooltipComponent]);
 
 const cantonsStore = useCantonsStore();
-const codesStore = useCodesStore();
 
-const codesItems = computed(() => {
-  const items: { value: string; title: string }[] = codesStore.codes
-    .map((code) => {
-      return {
-        value: code.code,
-        title: code.canton,
-      };
-    })
-    .sort((a, b) => {
-      if (a.title < b.title) {
-        return -1;
-      }
-      if (a.title > b.title) {
-        return 1;
-      }
-      return 0;
-    });
-  return items;
+const headers: Header[] = [
+  { text: "Code", value: "code", sortable: true },
+  { text: "Name", value: "title", sortable: true },
+  { text: "Male", value: "male", sortable: true },
+  { text: "Female", value: "female", sortable: true },
+  { text: "Other", value: "other", sortable: true },
+];
+
+const items = computed(() => {
+  return cantonsStore.cantons;
 });
+
+const showCanton = (item: ClickRowArgument) => {
+  selectedCanton.value = item.code;
+};
+
+const searchValue = ref();
 
 const selectedCanton = ref<string>();
 
@@ -58,11 +55,13 @@ const chartOption = computed<EChartsOption>(() => {
   <div>
     <v-row>
       <v-col>
-        <div class="text-h4 mb-3">Dropdown Selection</div>
+        <div class="text-h4 mb-3">Table Selection</div>
         <p class="font-weight-light mb-3">
           Select a canton to see its gender statistics.
         </p>
-        <v-select v-model="selectedCanton" label="Canton" :items="codesItems" />
+        <v-text-field label="Search" v-model="searchValue"></v-text-field>
+        <EasyDataTable :headers="headers" :items="items" :rowsPerPage="10" @click-row="showCanton" search-field="title"
+          :search-value="searchValue" />
       </v-col>
     </v-row>
     <v-row v-if="selectedCantonTitle">

@@ -14,6 +14,9 @@ export const useCantonsStore = defineStore("cantons", {
     getCantons(state) {
       return state.cantons;
     },
+    getCantonByCode: (state) => {
+      return (code: string) => state.cantons.find((ct) => ct.code === code);
+    },
   },
   actions: {
     async fetchCantons() {

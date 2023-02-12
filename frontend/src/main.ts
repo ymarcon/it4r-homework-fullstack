@@ -12,10 +12,13 @@ import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 import "vuetify/styles";
 
-import "./assets/main.css";
-
 import OpenLayersMap from "vue3-openlayers";
 import "vue3-openlayers/dist/vue3-openlayers.css";
+
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
+
+import "./assets/main.css";
 
 const vuetify = createVuetify({
   components,
@@ -39,5 +42,6 @@ app.use(createPinia());
 app.use(router);
 app.use(vuetify);
 app.use(OpenLayersMap);
+app.component("EasyDataTable", Vue3EasyDataTable);
 
 app.mount("#app");

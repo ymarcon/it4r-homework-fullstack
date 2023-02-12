@@ -18,6 +18,11 @@ const router = createRouter({
       name: "map",
       component: () => import("../views/MapView.vue"),
     },
+    {
+      path: "/table",
+      name: "table",
+      component: () => import("../views/TableView.vue"),
+    },
   ],
 });
 

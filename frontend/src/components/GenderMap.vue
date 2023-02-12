@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useChartOptions } from "@/utils/chart";
 import type { EChartsOption } from "echarts";
 import { PieChart } from "echarts/charts";
 import { LegendComponent, TooltipComponent } from "echarts/components";
@@ -30,36 +31,15 @@ const selectedItem = ref({});
 
 const chartOption = computed<EChartsOption>(() => {
   const count = selectedItem.value;
-  return {
-    tooltip: {
-      trigger: "item",
-    },
-    legend: {
-      left: "center",
-    },
-    series: [
-      {
-        type: "pie",
-        radius: ["40%", "80%"],
-        data: [
-          { value: count.female, name: "Female" },
-          { value: count.male, name: "Male" },
-          { value: count.other, name: "Other" },
-        ],
-      },
-    ],
-  };
+  return useChartOptions(count);
 });
-
 </script>
 
 <template>
   <div>
     <v-row>
       <v-col>
-        <div class="text-h4 mb-3">
-          Map Selection
-        </div>
+        <div class="text-h4 mb-3">Map Selection</div>
         <p class="font-weight-light mb-3">
           Select a canton to see its gender statistics.
         </p>

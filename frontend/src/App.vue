@@ -15,6 +15,9 @@ import { RouterView } from "vue-router";
         <v-tab to="/map">
           <v-app-bar-title>Map</v-app-bar-title>
         </v-tab>
+        <v-tab to="/table">
+          <v-app-bar-title>Table</v-app-bar-title>
+        </v-tab>
       </v-tabs>
     </v-app-bar>
     <v-main>
