@@ -1,30 +1,35 @@
 <script setup lang="ts">
 import { useCantonsStore } from "@/stores/cantons";
+import { useCodesStore } from "@/stores/codes";
 import type { EChartsOption } from "echarts";
 import { PieChart } from "echarts/charts";
 import { LegendComponent, TooltipComponent } from "echarts/components";
 import { use } from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { random } from "lodash";
-import { computed, ref, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import VChart from "vue-echarts";
 
 use([SVGRenderer, PieChart, LegendComponent, TooltipComponent]);
 
 const cantonsStore = useCantonsStore();
+const codesStore = useCodesStore();
 
 onMounted(() => {
   cantonsStore.fetchCantons();
+  codesStore.fetchCodes();
 });
 
-const cantonItems: { value: string; title: string }[] = computed(() => {
+const codesItems = computed(() => {
   const items: { value: string; title: string }[] = [];
-  Object.keys(cantonsStore.cantons).forEach((key) => {
-    items.push({
-      value: key,
-      title: cantonsStore.cantons[key]["title"],
+  const codes = codesStore.codes;
+  Object.keys(codes)
+    .sort()
+    .forEach((key) => {
+      items.push({
+        value: key,
+        title: codes[key],
+      });
     });
-  });
   return items;
 });
 
@@ -61,26 +66,36 @@ function getGenderCount(canton?: string): {
   if (canton === undefined) {
     return {};
   }
-  const counts = cantonsStore.cantons[canton];
-  return {
-    female: counts["female"],
-    male: counts["male"],
-    other: counts["other"],
-  };
+  const counts = cantonsStore.cantons
+    .filter((val) => val.code === canton)
+    .pop();
+  return counts
+    ? {
+      female: counts["female"] || 0,
+      male: counts["male"] || 0,
+      other: counts["other"] || 0,
+    }
+    : {
+      female: 0,
+      male: 0,
+      other: 0,
+    };
 }
 </script>
 
 <template>
-  <v-row>
-    <v-col>
-      <v-select v-model="selectedCanton" label="Canton" :items="cantonItems" />
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col>
-      <v-responsive aspect-ratio="2">
-        <v-chart :option="chartOption" />
-      </v-responsive>
-    </v-col>
-  </v-row>
+  <div>
+    <v-row>
+      <v-col>
+        <v-select v-model="selectedCanton" label="Canton" :items="codesItems" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-responsive aspect-ratio="2">
+          <v-chart :option="chartOption" />
+        </v-responsive>
+      </v-col>
+    </v-row>
+  </div>
 </template>

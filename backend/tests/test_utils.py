@@ -18,12 +18,13 @@ def test_to_int():
 
 
 def test_normalize_string():
-    assert hwu.normalize_string("hommes") == "Hommes"
-    assert hwu.normalize_string("canton ") == "Canton"
-    assert hwu.normalize_string("E_trangers") == "Etrangers"
+    assert hwu.normalize_string("hommes") == "hommes"
+    assert hwu.normalize_string("canton ") == "canton"
+    assert hwu.normalize_string("E_trangers") == "etrangers"
 
 
 def test_validate_column_names():
     assert hwu.validate_column_names(
-        ["Hommes", "Canton", "Suisses", "Femmes", "Etrangers"]
+        ["hommes", "canton", "suisses", "femmes", "etrangers"]
     )
+    assert not hwu.validate_column_names(["hommes", "suisses", "femmes", "etrangers"])

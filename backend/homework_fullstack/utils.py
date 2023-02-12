@@ -14,9 +14,9 @@ def read_codes():
 
 
 def normalize_string(col: str) -> str:
-    """Remove unexpected chars and capitalize string."""
-    name = re.sub("[^0-9a-zA-Z]+", "", col)
-    return name.lower().capitalize()
+    """Remove unexpected chars and lower string."""
+    name = re.sub("[^a-zA-Z]+", "", col)
+    return name.lower()
 
 
 def to_int(value: str) -> int:
@@ -25,18 +25,12 @@ def to_int(value: str) -> int:
 
 
 def validate_column_names(columns: List[str]) -> bool:
-    """Validate that the column names contain the expected ones."""
-    return (
-        "Canton" in columns
-        and "Etrangers" in columns
-        and "Femmes" in columns
-        and "Hommes" in columns
-        and "Suisses" in columns
-    )
+    """Validate that the column names contain the mandatory ones."""
+    return "canton" in columns and "femmes" in columns and "hommes" in columns
 
 
 def read_data(path: str):
-    """Read the user data in a data.frame and try to clean headers and values."""
+    """Read the user data in a data.frame, drop empty columns/rows and clean headers."""
     # read CSV file into a data frame, silently ignoring char encoding errors
     cantons = pd.read_csv(
         path,
@@ -46,16 +40,43 @@ def read_data(path: str):
     cantons = cantons.dropna(how="all").dropna(how="all", axis=1)
     # normalize column names
     cantons.columns = cantons.columns.map(normalize_string)
-    # sort alphabetically by Canton value, even with weird chars "should" have same order
+    # check mandatory column names
+    if not validate_column_names(list(cantons.columns)):
+        raise ValueError(
+            "Bad column names in data file, expecting at least (ignoring case): 'canton', 'femmes', 'hommes'"
+        )
+    return cantons
+
+
+def read_cantons():
+    """Read cantons data and format as a dictionary, where keys are canton codes."""
+    # read data from file
+    cantons = read_data("../dataset/canton.csv")
+    # sort alphabetically by Canton value, "should" have same order despite weird chars
     # as the built-in canton labels
     codes = pd.DataFrame.from_dict(
-        read_codes(), orient="index", columns=["Canton"]
-    ).sort_values(by="Canton")
+        read_codes(), orient="index", columns=["canton"]
+    ).sort_values(by="canton")
     cantons = cantons.set_index(codes.index)
-    cantons["Canton"] = codes["Canton"]
+    cantons["code"] = codes.index
+    cantons["canton"] = codes["canton"]
     # apply expected data types
-    cantons["Hommes"] = cantons["Hommes"].map(to_int)
-    cantons["Femmes"] = cantons["Femmes"].map(to_int)
-    cantons["Suisses"] = cantons["Suisses"].map(to_int)
-    cantons["Etrangers"] = cantons["Etrangers"].map(to_int)
-    return cantons
+    cantons["hommes"] = cantons["hommes"].map(to_int)
+    cantons["femmes"] = cantons["femmes"].map(to_int)
+    cantons = cantons.rename(
+        columns={
+            "canton": "title",
+            "hommes": "male",
+            "femmes": "female",
+            "autres": "other",
+        }
+    )
+    if "other" not in cantons:
+        cantons["other"] = 0
+    # silently remove useless columns
+    columnsToDrop = list()
+    for col in list(cantons.columns):
+        if col not in ["title", "male", "female", "other", "code"]:
+            columnsToDrop.append(col)
+    cantons = cantons.drop(columns=columnsToDrop, errors="ignore")
+    return cantons.to_dict("index")

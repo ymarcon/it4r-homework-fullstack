@@ -1,10 +1,15 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import type { Cantons } from "@/models/canton.model";
+
+export type CantonsState = {
+  cantons: Cantons;
+};
 
 export const useCantonsStore = defineStore("cantons", {
   state: () => ({
-    cantons: {},
-  }),
+    cantons: [],
+  } as CantonsState),
   getters: {
     getCantons(state) {
       return state.cantons;
@@ -15,8 +20,8 @@ export const useCantonsStore = defineStore("cantons", {
       try {
         const data = await axios.get("http://127.0.0.1:8000/cantons");
         this.cantons = data.data;
-      } catch (error) {
-        alert(error);
+      } catch (error: any) {
+        alert(error.response.data.detail);
         console.log(error);
       }
     },
