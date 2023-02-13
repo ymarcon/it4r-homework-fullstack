@@ -22,8 +22,9 @@ const selectCondition = click;
 const featureSelected = (event: any) => {
   if (event.selected.length == 1) {
     const feature = event.selected[0];
-    console.log(feature.values_);
     selectedItem.value = feature.values_;
+  } else {
+    selectedItem.value = undefined;
   }
 };
 
@@ -45,7 +46,6 @@ const chartOption = computed<EChartsOption>(() => {
         </p>
         <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
           <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
-          <ol-fullscreen-control />
           <ol-zoom-control />
           <ol-zoomslider-control />
           <ol-tile-layer>

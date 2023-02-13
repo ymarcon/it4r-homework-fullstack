@@ -15,8 +15,8 @@ import "vuetify/styles";
 import OpenLayersMap from "vue3-openlayers";
 import "vue3-openlayers/dist/vue3-openlayers.css";
 
-import Vue3EasyDataTable from 'vue3-easy-data-table';
-import 'vue3-easy-data-table/dist/style.css';
+import Vue3EasyDataTable from "vue3-easy-data-table";
+import "vue3-easy-data-table/dist/style.css";
 
 import "./assets/main.css";
 

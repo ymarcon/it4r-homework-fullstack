@@ -4,7 +4,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 <template>
   <v-container>
-    <div class="text-h2">Homework</div>
+    <div class="text-h3">ENAC-IT4R Homework Full Stack</div>
     <p class="mt-3">
       Different ways of selecting the Canton of interest are proposed.
     </p>
